@@ -7,24 +7,38 @@ from selenium.webdriver.chrome.options import Options
 import time
 # import requests
 
-# chrome_options= Options()
-# chrome_options.add_argument("--headless")
-# chrome_options.add_argument("start-maximized")
-# chrome_options.add_argument("--disable-blink-features")
-# chrome_options.add_argument("--disable-blink-features=AutomationControlled")
+options= Options()
+# options.add_argument("--headless")
+options.add_argument("start-maximized")
+# options.add_argument("--disable-blink-features")
+# options.add_argument("--disable-blink-features=AutomationControlled")
 
 LOGIN_PAGE="https://partner.outsourceaccelerator.com/login"
 ACCOUNT="partner.wingassistant@outsourceaccelerator.com"
 PASSWORD="Os@!!hgrj3138"
+LEAD_PAGE="https://partner.outsourceaccelerator.com/partner/leads"
 
-# driver=webdriver.Chrome('chromedriver', chrome_options=chrome_options)
-driver=webdriver.Chrome('chromedriver')
+driver=webdriver.Chrome('chromedriver', options=options)
+# driver=webdriver.Chrome('chromedriver')
 
 wait=WebDriverWait(driver, 30)
+
+#Login with account and password
 driver.get(LOGIN_PAGE)
 wait.until(EC.element_to_be_clickable((By.ID, "email"))).send_keys(ACCOUNT)
 wait.until(EC.element_to_be_clickable((By.ID, "password"))).send_keys(PASSWORD)
-wait.until(EC.element_to_be_clickable((By.XPATH, "//button[text()='Log in']"))).click()
+wait.until(EC.element_to_be_clickable((By.XPATH, '//button[text()="Log in"]'))).click()
+
+#Load the leader page
+# driver.get(LEAD_PAGE)
+wait.until(EC.element_to_be_clickable((By.XPATH, '//button[text()="Inbound inquiries"]'))).click()
+
+wait.until(EC.element_to_be_clickable((By.XPATH, '//a[@href="/partner/leads"]'))).click()
+# wait.until(EC.presence_of_all_elements_located((By.XPATH, '//a[@href="partner/leads"]'))).click()
+
+#Click view button for each lead
+# wait.until(EC.element_to_be_clickable((By.XPATH, '//div[@id="row-0"]//button[text()="View"]'))).click()
+
 
 time.sleep(30)
 # a = driver.find_elements_by_xpath('//li[@data-testid="list-item-8"]//div[@class="ant-space-item"]')
