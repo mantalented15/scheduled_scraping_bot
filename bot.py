@@ -1,11 +1,9 @@
 from selenium import webdriver
-# from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.chrome.options import Options
 import time
-# import requests
 
 options= Options()
 # options.add_argument("--headless")
@@ -34,42 +32,30 @@ wait.until(EC.element_to_be_clickable((By.XPATH, '//button[text()="Inbound inqui
 
 wait.until(EC.element_to_be_clickable((By.XPATH, '//a[@href="/partner/leads"]'))).click()
 
+#loop for each lead and view
+
 #Click view button for each lead
-wait.until(EC.element_to_be_clickable((By.XPATH, '//div[@id="row-0"]//button[text()="View"]'))).click()
+# wait.until(EC.element_to_be_clickable((By.XPATH, '//div[@id="row-0"]//button[text()="View"]'))).click()
+view_buttons = wait.until(EC.visibility_of_all_elements_located((By.XPATH, '//div[@role="row"]//button[text()="View"]')))
+# for index in range(len(view_buttons)):
+#     # print(index)
+#     wait.until(EC.visibility_of_element_located((By.XPATH, '//div[@id="row-%d"]//button[text()="View"]'%index))).click()
+#     # wait.until(EC.element_located_to_be_selected((By.XPATH, '//div[@id="row-%d"]//button[text()="View"]'%index))).click()
+    
+#     # view.click()
+#     wait.until(EC.element_to_be_clickable((By.XPATH, '//span[text()="Close panel"]/ancestor::button'))).click()
+    
+count=0
+for view in view_buttons:
+    count=count+1
+    print(count)
+    view.click()
+    wait.until(EC.element_to_be_clickable((By.XPATH, '//span[text()="Close panel"]/ancestor::button'))).click()
+
 
 #Cancel the view
-wait.until(EC.element_to_be_clickable((By.XPATH, '//span[text()="Close panel"]/ancestor::button'))).click()
+# wait.until(EC.element_to_be_clickable((By.XPATH, '//span[text()="Close panel"]/ancestor::button'))).click()
 
 
 time.sleep(30)
-# a = driver.find_elements_by_xpath('//li[@data-testid="list-item-8"]//div[@class="ant-space-item"]')
-# a = driver.find_elements_by_xpath('//li[@data-testid="list-item-8"]')
-# a = driver.find_element(By.XPATH, '//div[@class="ant-space-item"]/a')
-# a = driver.find_element(By.XPATH, '//li[@data-testid="list-item-1"]/div/div/a')
 
-# WebDriverWait(driver,240).until(EC.element_to_be_clickable((By.XPATH, '//li[@data-testid="list-item-1"]/div/div/a')))
-# a = driver.find_element(By.XPATH, '//li[@data-testid="list-item-1"]/div/div/a')
-# try:
-    # a = WebDriverWait(driver,180).until(EC.presence_of_element_located((By.XPATH, '//li[@data-testid="list-item-1"]/div/div/a')))
-    # a = WebDriverWait(driver,180).until(EC.visibility_of_element_located((By.XPATH, '//li[@data-testid="list-item-1"]/div/div/a')))
-    
-    # a = WebDriverWait(driver,180).until(EC.presence_of_all_elements_located((By.XPATH, '//ul[@data-testid="list-items"]//a')))
-
-    # href = a.get_attribute('href')
-    # a = WebDriverWait(driver,180).until(EC.presence_of_all_elements_located((By.XPATH, '//div[@class="ant-space-item"]/a')))
-    # ul = WebDriverWait(driver,240).until(EC.presence_of_all_elements_located((By.XPATH, '//ul[@class="ant-list-items"]')))
-    # a = ul.find_elements_by_xpath('//a')
-# except:
-#     print("Timed out waiting for page to load")
-
-# for a_i in a:
-#     print(a_i)
-
-# # a_list = []
-# for i in range(len(a)):
-#     print(a[i].get_Attribute('href'))
-
-# print(a.text)
-# print(a.get_attribute("href"))
-# print(a_list)
-# print(requests.get(href).text)
