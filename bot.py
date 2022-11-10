@@ -30,14 +30,15 @@ wait.until(EC.element_to_be_clickable((By.ID, "password"))).send_keys(PASSWORD)
 wait.until(EC.element_to_be_clickable((By.XPATH, '//button[text()="Log in"]'))).click()
 
 #Load the leader page
-# driver.get(LEAD_PAGE)
 wait.until(EC.element_to_be_clickable((By.XPATH, '//button[text()="Inbound inquiries"]'))).click()
 
 wait.until(EC.element_to_be_clickable((By.XPATH, '//a[@href="/partner/leads"]'))).click()
-# wait.until(EC.presence_of_all_elements_located((By.XPATH, '//a[@href="partner/leads"]'))).click()
 
 #Click view button for each lead
-# wait.until(EC.element_to_be_clickable((By.XPATH, '//div[@id="row-0"]//button[text()="View"]'))).click()
+wait.until(EC.element_to_be_clickable((By.XPATH, '//div[@id="row-0"]//button[text()="View"]'))).click()
+
+#Cancel the view
+wait.until(EC.element_to_be_clickable((By.XPATH, '//span[text()="Close panel"]/ancestor::button'))).click()
 
 
 time.sleep(30)
