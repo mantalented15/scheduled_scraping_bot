@@ -60,75 +60,74 @@ def get_leads_data():
 
     # print(df_lead_data)
 
-    time.sleep(3)
+    time.sleep(1)
     #Cancel the view
     wait.until(EC.element_to_be_clickable((By.XPATH, '//span[text()="Close panel"]/ancestor::button'))).click()
 
 
     #view1
     wait.until(EC.element_to_be_clickable((By.XPATH, '//div[@id="row-1" and @role="row"]//button'))).click()
-    time.sleep(3)
+    time.sleep(1)
     wait.until(EC.element_to_be_clickable((By.XPATH, '//span[text()="Close panel"]/ancestor::button'))).click()
 
     #test lead
             # last_height = driver.execute_script("return document.body.scrollHeight")
     driver.execute_script("window.scrollTo(0, 150);")
-    time.sleep(5)
+    time.sleep(1)
     # element = wait.until(EC.visibility_of_element_located((By.XPATH, '//div[@id="row-2" and @role="row"]//button')))
     element=driver.find_element(By.XPATH, "//div[@id='row-2' and @role='row']//button")
-    print(element)
     action=ActionChains(driver)
     action.move_to_element(element).perform()
     time.sleep(1)
     element.click()
  
-    time.sleep(3)
+    time.sleep(1)
     wait.until(EC.element_to_be_clickable((By.XPATH, '//span[text()="Close panel"]/ancestor::button'))).click()
 
 
     #test lead
             # last_height = driver.execute_script("return document.body.scrollHeight")
-    driver.execute_script("window.scrollTo(0, 150);")
-    time.sleep(5)
-    # element = wait.until(EC.visibility_of_element_located((By.XPATH, '//div[@id="row-2" and @role="row"]//button')))
-    element=driver.find_element(By.XPATH, "//div[@id='row-2' and @role='row']//button")
+    driver.execute_script("window.scrollTo(0, 250);")
+    time.sleep(1)
+    element = wait.until(EC.visibility_of_element_located((By.XPATH, '//div[@id="row-3" and @role="row"]//button')))
+    # element=driver.find_element(By.XPATH, "//div[@id='row-3' and @role='row']//button")
     print(element)
     action=ActionChains(driver)
     action.move_to_element(element).perform()
     time.sleep(1)
     element.click()
  
-    time.sleep(3)
+    time.sleep(1)
     wait.until(EC.element_to_be_clickable((By.XPATH, '//span[text()="Close panel"]/ancestor::button'))).click()
 
     #test lead
             # last_height = driver.execute_script("return document.body.scrollHeight")
-    driver.execute_script("window.scrollTo(0, 200);")
-    time.sleep(5)
-    # element = wait.until(EC.visibility_of_element_located((By.XPATH, '//div[@id="row-2" and @role="row"]//button')))
-    element=driver.find_element(By.XPATH, "//div[@id='row-3' and @role='row']//button")
+    driver.execute_script("window.scrollTo(0, 350);")
+    time.sleep(1)
+    element = wait.until(EC.visibility_of_element_located((By.XPATH, '//div[@id="row-4" and @role="row"]//button')))
+    # element=driver.find_element(By.XPATH, "//div[@id='row-4' and @role='row']//button")
     print(element)
     action=ActionChains(driver)
     action.move_to_element(element).perform()
     time.sleep(1)
     element.click()
  
-    time.sleep(3)
+    time.sleep(1)
     wait.until(EC.element_to_be_clickable((By.XPATH, '//span[text()="Close panel"]/ancestor::button'))).click()
 
     #test lead
             # last_height = driver.execute_script("return document.body.scrollHeight")
-    driver.execute_script("window.scrollTo(0, 400);")
-    time.sleep(5)
-    # element = wait.until(EC.visibility_of_element_located((By.XPATH, '//div[@id="row-2" and @role="row"]//button')))
-    element=driver.find_element(By.XPATH, "//div[@id='row-4' and @role='row']//button")
+    driver.execute_script("window.scrollTo(0, 450);")
+    time.sleep(1)
+    element = wait.until(EC.visibility_of_element_located((By.XPATH, '//div[@id="row-5" and @role="row"]//button')))
+    # element=driver.find_element(By.XPATH, "//div[@id='row-5' and @role='row']//button")
     print(element)
     action=ActionChains(driver)
     action.move_to_element(element).perform()
     time.sleep(1)
     element.click()
  
-    time.sleep(3)
+    time.sleep(1)
     wait.until(EC.element_to_be_clickable((By.XPATH, '//span[text()="Close panel"]/ancestor::button'))).click()
 
 
