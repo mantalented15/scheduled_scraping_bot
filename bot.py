@@ -4,7 +4,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.chrome.options import Options
 # from selenium.webdriver.firefox.options import Options
-from selenium.webdriver.common.action_chains import ActionChains
+# from selenium.webdriver.common.action_chains import ActionChains
 import time
 import pandas as pd
 
@@ -38,104 +38,54 @@ def get_leads_data():
 
     #Load the leader page
     wait.until(EC.element_to_be_clickable((By.XPATH, '//button[text()="Inbound inquiries"]'))).click()
-
     wait.until(EC.element_to_be_clickable((By.XPATH, '//a[@href="/partner/leads"]'))).click()
 
+    #get the number of leads per page
+    number_per_page = int(wait.until(EC.visibility_of_element_located((By.XPATH, '//select//option[@selected]'))).get_attribute("value"))
 
-    #click the view0
-    wait.until(EC.element_to_be_clickable((By.XPATH, '//div[@id="row-0" and @role="row"]//button'))).click()
+    # get the number of total leads
+    caption_leads_number = wait.until(EC.visibility_of_element_located((By.XPATH, "//span[contains(text(), 'of')]"))).text
+    leads_number = int(caption_leads_number[caption_leads_number.find('of')+2:])
+    print(leads_number)
 
-    #get the data under lead
-    divs = wait.until(EC.visibility_of_all_elements_located((By.CSS_SELECTOR, 'dl > div')))
+    # calcuate the number of pages
+    pages_number = int(leads_number/number_per_page) + 1
 
-    columns=['Lead score', 'Email address', 'Phone number', 'Timezone', 'Country', 'Device', 'Sector', 'Company size', 'Role to outsource', 'Number of staff to oursource', 'Key question', 'Comment', 'Data added']
-    dict_lead_data={}
-    leads_data=[]
-    for index in range(len(divs)):
-        dict_lead_data[columns[index]]=divs[index].find_element(By.TAG_NAME, 'dd').text
-    leads_data.append(dict_lead_data)
+    #calculate the scroll step
+    scroll_height = driver.execute_script("return document.body.scrollHeight")
+    scroll_step = scroll_height/number_per_page
 
-    #convert leads_data into panda dataframe
-    df_lead_data=pd.DataFrame(leads_data)
+    #click the view buttons of leads and get the data into dataframe
+    df_lead_data=pd.DataFrame()
 
-    # print(df_lead_data)
+    for page_index in range(pages_number):
+        driver.execute_script("window.scrollTo(0, 0);")
+        time.sleep(2)
+        for lead_index in range(number_per_page):
+            print(lead_index)
+            if lead_index:
+                driver.execute_script("window.scrollTo(0, arguments[0]);", scroll_step*lead_index)
+            wait.until(EC.element_to_be_clickable((By.XPATH, "//div[@id='row-{}' and @role='row']//button".format(lead_index)))).click()
 
-    time.sleep(1)
-    #Cancel the view
-    wait.until(EC.element_to_be_clickable((By.XPATH, '//span[text()="Close panel"]/ancestor::button'))).click()
+            #get the data under lead
+            divs = wait.until(EC.visibility_of_all_elements_located((By.CSS_SELECTOR, 'dl > div')))
 
+            columns=['Lead score', 'Email address', 'Phone number', 'Timezone', 'Country', 'Device', 'Sector', 'Company size', 'Role to outsource', 'Number of staff to oursource', 'Key question', 'Comment', 'Data added']
+            dict_lead_data={}
+            for index in range(len(divs)):
+                dict_lead_data[columns[index]]=divs[index].find_element(By.TAG_NAME, 'dd').text
 
-    #view1
-    wait.until(EC.element_to_be_clickable((By.XPATH, '//div[@id="row-1" and @role="row"]//button'))).click()
-    time.sleep(1)
-    wait.until(EC.element_to_be_clickable((By.XPATH, '//span[text()="Close panel"]/ancestor::button'))).click()
+            #append data dictionary into panda dataframe
+            df_lead_data = pd.concat([df_lead_data, pd.DataFrame([dict_lead_data])], ignore_index=True)
 
-    #test lead
-            # last_height = driver.execute_script("return document.body.scrollHeight")
-    driver.execute_script("window.scrollTo(0, 150);")
-    time.sleep(1)
-    # element = wait.until(EC.visibility_of_element_located((By.XPATH, '//div[@id="row-2" and @role="row"]//button')))
-    # element=driver.find_element(By.XPATH, "//div[@id='row-2' and @role='row']//button")
-    # action=ActionChains(driver)
-    # action.move_to_element(element).perform()
-    # time.sleep(1)
-    # element.click()
- 
-    wait.until(EC.visibility_of_element_located((By.XPATH, '//div[@id="row-2" and @role="row"]//button'))).click()
-    time.sleep(1)
-    wait.until(EC.element_to_be_clickable((By.XPATH, '//span[text()="Close panel"]/ancestor::button'))).click()
+            #Cancel the view
+            wait.until(EC.element_to_be_clickable((By.XPATH, '//span[text()="Close panel"]/ancestor::button'))).click()
 
+        #go over the next page
+        if page_index!=pages_number-1:  # do not go over next page in case of last page
+            wait.until(EC.element_to_be_clickable((By.XPATH, "//button[@aria-label='Next Page']"))).click()
 
-    #test lead
-            # last_height = driver.execute_script("return document.body.scrollHeight")
-    driver.execute_script("window.scrollTo(0, 250);")
-    # time.sleep(1)
-    # element = wait.until(EC.visibility_of_element_located((By.XPATH, '//div[@id="row-3" and @role="row"]//button')))
-    # # element=driver.find_element(By.XPATH, "//div[@id='row-3' and @role='row']//button")
-    # print(element)
-    # action=ActionChains(driver)
-    # action.move_to_element(element).perform()
-    # time.sleep(1)
-    # element.click()
-    
-    wait.until(EC.visibility_of_element_located((By.XPATH, '//div[@id="row-3" and @role="row"]//button'))).click()
-    time.sleep(1)
-    wait.until(EC.element_to_be_clickable((By.XPATH, '//span[text()="Close panel"]/ancestor::button'))).click()
-
-    #test lead
-            # last_height = driver.execute_script("return document.body.scrollHeight")
-    driver.execute_script("window.scrollTo(0, 350);")
-    # time.sleep(1)
-    # element = wait.until(EC.visibility_of_element_located((By.XPATH, '//div[@id="row-4" and @role="row"]//button')))
-    # # element=driver.find_element(By.XPATH, "//div[@id='row-4' and @role='row']//button")
-    # print(element)
-    # action=ActionChains(driver)
-    # action.move_to_element(element).perform()
-    # time.sleep(1)
-    # element.click()
-    wait.until(EC.visibility_of_element_located((By.XPATH, '//div[@id="row-4" and @role="row"]//button'))).click()
-
-    time.sleep(1)
-    wait.until(EC.element_to_be_clickable((By.XPATH, '//span[text()="Close panel"]/ancestor::button'))).click()
-
-    #test lead
-            # last_height = driver.execute_script("return document.body.scrollHeight")
-    driver.execute_script("window.scrollTo(0, 450);")
-    time.sleep(1)
-    element = wait.until(EC.visibility_of_element_located((By.XPATH, '//div[@id="row-5" and @role="row"]//button')))
-    # element=driver.find_element(By.XPATH, "//div[@id='row-5' and @role='row']//button")
-    print(element)
-    action=ActionChains(driver)
-    action.move_to_element(element).perform()
-    time.sleep(1)
-    element.click()
- 
-    time.sleep(1)
-    wait.until(EC.element_to_be_clickable((By.XPATH, '//span[text()="Close panel"]/ancestor::button'))).click()
-
-
-
-    time.sleep(30)
+    print(df_lead_data)
 
 
 def main():
