@@ -46,7 +46,6 @@ def get_leads_data():
     # get the number of total leads
     caption_leads_number = wait.until(EC.visibility_of_element_located((By.XPATH, "//span[contains(text(), 'of')]"))).text
     leads_number = int(caption_leads_number[caption_leads_number.find('of')+2:])
-    print(leads_number)
 
     # calcuate the number of pages
     pages_number = int(leads_number/number_per_page) + 1
