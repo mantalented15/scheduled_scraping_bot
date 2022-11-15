@@ -94,7 +94,9 @@ def get_leads_data():
     df_lead_data.to_csv('leads_data.csv', index=False)
 
 def main():
-    get_leads_data()
+    while(True):
+        get_leads_data()
+        time.sleep(config.time_interval)
 
 if __name__ == "__main__":
     main()
