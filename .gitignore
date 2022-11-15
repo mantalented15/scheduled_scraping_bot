@@ -1,2 +1,3 @@
 config.py
 loads_data.csv
+__pycache__/
