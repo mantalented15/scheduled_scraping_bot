@@ -69,13 +69,21 @@ def get_leads_data():
             if lead_index > 0:
                 driver.execute_script("window.scrollTo(0, arguments[0]);", scroll_step*lead_index)
                 time.sleep(0.5)
+            
+            # get name of lead and store into a dictionary
+            lead_name = wait.until(EC.visibility_of_element_located((By.XPATH, "//div[@id='row-{}' and @role='row']//p[@class='text-[#111827] font-medium']".format(lead_index)))).text.splitlines()[0]
+            print(lead_name)
+            
+            dict_lead_data={}
+            dict_lead_data['Lead name'] = lead_name
+            # click view button
             wait.until(EC.element_to_be_clickable((By.XPATH, "//div[@id='row-{}' and @role='row']//button".format(lead_index)))).click()
 
             #get the data under lead
             divs = wait.until(EC.visibility_of_all_elements_located((By.CSS_SELECTOR, 'dl > div')))
 
             columns=['Lead score', 'Email address', 'Phone number', 'Timezone', 'Country', 'Device', 'Sector', 'Company size', 'Role to outsource', 'Number of staff to oursource', 'Key question', 'Comment', 'Data added']
-            dict_lead_data={}
+
             for index in range(len(divs)):
                 dict_lead_data[columns[index]]=divs[index].find_element(By.TAG_NAME, 'dd').text
 
