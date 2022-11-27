@@ -8,6 +8,9 @@ from selenium.webdriver.chrome.options import Options
 import time
 import pandas as pd
 import config
+from apscheduler.schedulers.blocking import BlockingScheduler
+# from apscheduler.schedulers.background import BackgroundScheduler
+
 
 def get_leads_data():
     options= Options()
@@ -102,9 +105,14 @@ def get_leads_data():
     df_lead_data.to_csv('leads_data.csv', index=False)
 
 def main():
-    while(True):
-        get_leads_data()
-        time.sleep(config.time_interval)
+    # while(True):
+    #     get_leads_data()
+    #     time.sleep(config.time_interval_secs)
+
+    scheduler = BlockingScheduler()
+    # scheduler = BackgroundScheduler()
+    scheduler.add_job(get_leads_data, 'interval', minutes=config.time_interval_mins)
+    scheduler.start()
 
 if __name__ == "__main__":
     main()
